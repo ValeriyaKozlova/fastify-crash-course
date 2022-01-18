@@ -1,15 +1,28 @@
-const items = require('../Items')
+const {v4: uuidv4} = require('uuid')
+let items = require('../Items')
 
-const getItems = (req, replay) => {
-    replay.send(items)
+const getItems = (req, reply) => {
+    reply.send(items)
 }
 
-const getItem = (req, replay) => {
+const getItem = (req, reply) => {
     const {id} = req.params
     
     const item = items.find((item ) => item.id === id)
         
-    replay.send(item)
+    reply.send(item)
 }
 
-module.exports = {getItem, getItems}
+const addItem = (req, reply) => {
+   const {name} = req.body
+   const item = {
+       id: uuidv4(),
+       name
+   }
+
+   items = [...items, item]
+
+   reply.code(201).send(item)
+}
+
+module.exports = {getItem, getItems, addItem}
