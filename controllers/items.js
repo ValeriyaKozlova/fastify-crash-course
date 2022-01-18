@@ -13,17 +13,30 @@ const getItem = (req, reply) => {
     reply.send(item)
 }
 
-const addItem = (req, reply) => {
-   const {name} = req.body
-   const item = {
-       id: uuidv4(),
-       name
-   }
+// const addItem = (req, reply) => {
+//    const {name} = req.body
+//    const item = {
+//        id: uuidv4(),
+//        name
+//    }
 
-   items = [...items, item]
+//    items = [...items, item]
 
-   reply.code(201).send(item)
-}
+//    reply.code(201).send(item)
+// }
+
+const addItems = (req, reply) => {
+    let array = req.body
+    console.log(items)
+
+    const newItems = array.map(item => {
+        return {id: uuidv4(), name: item.name}
+    })
+ 
+    items = [...items, ...newItems]
+ 
+    reply.code(201).send(newItems)
+ }
 
 const deleteItem = (req, reply) => {
     const {id} = req.params
@@ -43,4 +56,5 @@ const updateItem = (req, reply) => {
     reply.send(item)
 }
 
-module.exports = {getItem, getItems, addItem, deleteItem, updateItem}
+module.exports = {getItem, getItems, deleteItem, updateItem, addItems
+}

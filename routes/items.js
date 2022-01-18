@@ -1,5 +1,5 @@
 const items = require('../Items')
-const {getItem, getItems, addItem, deleteItem, updateItem} = require('../controllers/items')
+const {getItem, getItems, deleteItem, updateItem, addItems} = require('../controllers/items')
 
 // Item schema
 const Item = {
@@ -8,6 +8,19 @@ const Item = {
         id: {type: 'string'},
         name: {type: 'string'}
     }
+}
+
+// Items schema
+const Items = {
+    type: 'array',
+    items: {
+        type: 'object',
+        properties: {
+            id: {type: 'string'},
+            name: {type: 'string'}
+        }
+    }
+
 }
 
 // Options for get all items
@@ -23,23 +36,6 @@ const getItemsOpts = {
     handler: getItems
 }
 
-// Options for get single item
-const postItemOpts = {
-    schema: {
-        body: {
-            type: 'object',
-            required: ['name'],
-            properties: {
-                name: {type: 'string'}
-            }
-        },
-        response: {
-            201: Item
-        }
-    },
-    handler: addItem
-}
-
 // Options for post single item
 const getItemOpts = {
     schema: {
@@ -48,6 +44,43 @@ const getItemOpts = {
         }
     },
     handler: getItem
+}
+
+// Options for post single item
+// const postItemOpts = {
+//     schema: {
+//         body: {
+//             type: 'object',
+//             required: ['name'],
+//             properties: {
+//                 name: {type: 'string'}
+//             }
+//         },
+//         response: {
+//             201: Item
+//         }
+//     },
+//     handler: addItem
+// }
+
+// Options for post several items
+const postItemsOpts = {
+    schema: {
+        body: {
+            type: 'array',
+            items: {
+                type: 'object',
+                required: ['name'],
+                properties: {
+                    name: {type: 'string'}
+                }
+            }
+        },
+        response: {
+            201: Items
+        }
+    },
+    handler: addItems
 }
 
 // Options for delete single item
@@ -75,6 +108,7 @@ const updateItemOpts = {
     handler: updateItem
 }
 
+
 function itemRoutes (fastify, options, done) {
     // Get all items
     fastify.get('/items', getItemsOpts)
@@ -83,13 +117,14 @@ function itemRoutes (fastify, options, done) {
     fastify.get('/items/:id', getItemOpts)
 
     // Add item
-    fastify.post('/items', postItemOpts)
+    fastify.post('/items', postItemsOpts)
 
     // Delete item
     fastify.delete('/items/:id', deleteItemOpts)
     
      // Update item
      fastify.put('/items/:id', updateItemOpts)
+
 
     done()
 }

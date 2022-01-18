@@ -8,14 +8,15 @@ GET http://localhost:5000/items HTTP/1.1
 GET http://localhost:5000/items/2 HTTP/1.1
 
 
-### ADD ITEM
+### ADD ITEMS
 
 POST http://localhost:5000/items HTTP/1.1
 Content-Type: application/json
 
-{
-    "name": "New item"
-}
+[
+    {"name": "New item"},
+    {"name": "New item 2"}
+]
 
 ### DELETE ITEM
 
@@ -23,7 +24,7 @@ DELETE http://localhost:5000/items/2 HTTP/1.1
 
 ### UPDATE ITEM
 
-PUT http://localhost:5000/items/2 HTTP/1.1
+PUT http://localhost:5000/items/3 HTTP/1.1
 Content-Type: application/json
 
 {
